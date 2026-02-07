@@ -1,17 +1,25 @@
-from data.bun_data import BunData as BD
+import pytest
+from praktikum.bun import Bun
 
 class TestBun:
-    def test_bun_get_name(self, bun):
-        """Проверка названия булочки"""
-        assert bun.get_name() is not None
-        assert len(bun.get_name()) > 1
 
-    def test_bun_get_price(self, bun):
-        """Проверка цены булочки"""
-        assert bun.get_price() is not None
-        assert bun.get_price() != 0
-
-    def test_bun_create(self, bun):
+    @pytest.mark.parametrize(
+        "name, price",
+        [
+            ("test one", 100.0),
+            ("test two", 200.0),
+            ("test three", 500.0)
+        ]
+    )
+    def test_bun_create(self, name, price):
         """Проверка создания булочки"""
-        assert bun.name == BD.name
-        assert bun.price == BD.price
+        bun = Bun(name, price)
+
+        assert isinstance(bun.get_name(), str) == True
+        assert isinstance(bun.get_price(), float) == True
+
+        assert bun.get_name().strip() != ""
+        assert bun.get_price() > 0
+
+        assert bun.get_name() == name
+        assert bun.get_price() == price
